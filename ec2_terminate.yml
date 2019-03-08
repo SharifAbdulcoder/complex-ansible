@@ -1,10 +1,10 @@
 --- #ansible-playbook ec2_deploy.yml  --extra-vars="region=eu-west-1"
-- name: Creates ec2 instances
+- name: Terminate ec2 instances
   hosts: localhost
   vars_files:
     - regions/{{ region }}.yml
   tasks:
-    - name: Creates ec2 instances
+    - name: Terminate instance
       ec2:
         key_name: "{{ key_name }}"
         assign_public_ip: yes
@@ -13,3 +13,5 @@
         image: "{{ image }}" 
         vpc_subnet_id: "{{ vpc_subnet_id }}"
         count : "{{ count }}"
+        state: 'absent'
+        instance_ids: '{{ ec2.instance_ids }}'
