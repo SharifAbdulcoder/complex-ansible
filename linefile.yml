@@ -1,0 +1,28 @@
+---
+- name: File line modificaiton :) 
+  hosts: localhost
+  vars_prompt:
+    - name: Port
+      prompt: "Enter a port for your SSH key: "
+  become: yes
+  become_method: sudo
+  tasks: 
+    - name: change content
+      lineinfile:
+        path: /tmp/test
+        regexp: "^konichiwa"
+        line: "Que Paso"
+
+
+
+    - name: Change ssh port
+      lineinfile: 
+        path: /etc/ssh/sshd_config
+        regexp: "^Port 1300"
+        line: Port "{{ Port }}"
+
+
+    - name: Restart sshd
+      systemd: 
+        name: sshd
+        state: restarted
